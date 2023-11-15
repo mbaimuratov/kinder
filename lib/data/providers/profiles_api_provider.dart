@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:kinder/data/models/profile.dart';
 
 abstract class ProfilesApiProvider {
@@ -31,10 +33,10 @@ class ProfilesApiProviderImpl implements ProfilesApiProvider {
       return Profile(
         name: names[index],
         location: locations[index],
-        followers: 100 + index,
-        posts: 10 + index,
-        following: 50 + index,
-        photoUrls: List.generate(5, (photoIndex) => 'https://picsum.photos/500/800?image=${index * 5 + photoIndex}'),
+        followers: 1000 + Random.secure().nextInt(1000),
+        posts: 100 + Random.secure().nextInt(100),
+        following: 1000 + Random.secure().nextInt(1000),
+        photoUrls: List.generate(5, (photoIndex) => 'https://picsum.photos/500/900?image=${index * 5 + photoIndex}'),
         isFollowing: false,
         bio: bioList[index],
       );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AnimatedFollowButton extends StatefulWidget {
-  const AnimatedFollowButton({
+class FollowButton extends StatelessWidget {
+  const FollowButton({
     super.key,
     this.following = false,
     this.onPressed,
@@ -11,28 +11,23 @@ class AnimatedFollowButton extends StatefulWidget {
   final Function()? onPressed;
 
   @override
-  State createState() => _AnimatedFollowButtonState();
-}
-
-class _AnimatedFollowButtonState extends State<AnimatedFollowButton> {
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onPressed,
+      onTap: onPressed,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: widget.following ? 40 : 120,
+        width: following ? 40 : 120,
         height: 40,
         decoration: BoxDecoration(
-          color: widget.following ? Colors.red : Colors.white,
+          color: following ? Colors.red : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: widget.following ? Colors.red : Colors.red,
+            color: following ? Colors.red : Colors.red,
           ),
         ),
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          child: widget.following
+          child: following
               ? Icon(Icons.person, color: Colors.white, key: UniqueKey())
               : Text(
                   'FOLLOW',

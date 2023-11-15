@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kinder/cubit/profiles/profiles_cubit.dart';
+import 'package:kinder/injections/profiles_repository_di.dart';
 import 'package:kinder/ui/screens/profiles/profiles_page.dart';
 
 void main() {
@@ -16,7 +19,16 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MyHomePage(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<ProfilesCubit>(
+            create: (context) => ProfileCubitImpl(
+              profileRepository: ProfilesRepositoryInject.instance,
+            ),
+          ),
+        ],
+        child: const MyHomePage(),
+      ),
       debugShowCheckedModeBanner: false,
     );
   }

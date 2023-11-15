@@ -16,14 +16,11 @@ class _ProfilePageState extends State<ProfilePage> {
   double _sheetProgress = 0.0;
   int _currentPage = 0;
 
+  bool _isAnimatingText = false;
+
   @override
   void initState() {
     super.initState();
-    _pageController.addListener(() {
-      if (_pageController.position.haveDimensions) {
-        setState(() {});
-      }
-    });
 
     BlocProvider.of<ProfilesCubit>(context).fetchProfiles();
   }
@@ -62,7 +59,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     onPageChanged: (index) {
                       setState(() {
-                        _currentPage = index;
+                        _isAnimatingText = true;
+                        Future.delayed(const Duration(milliseconds: 200), () {
+                          setState(() {
+                            _isAnimatingText = false;
+                            _currentPage = index;
+                          });
+                        });
                       });
                     },
                   ),
@@ -88,10 +91,15 @@ class _ProfilePageState extends State<ProfilePage> {
                             decoration: const BoxDecoration(
                               color: Colors.transparent,
                             ),
-                            child: _buildSocialStats(
-                              profiles[_currentPage].followers,
-                              profiles[_currentPage].posts,
-                              profiles[_currentPage].following,
+                            child: AnimatedOpacity(
+                              curve: Curves.easeInOut,
+                              opacity: _isAnimatingText ? 0.0 : 1.0,
+                              duration: const Duration(milliseconds: 200),
+                              child: _buildSocialStats(
+                                profiles[_currentPage].followers,
+                                profiles[_currentPage].posts,
+                                profiles[_currentPage].following,
+                              ),
                             ),
                           ),
                           Expanded(
@@ -120,26 +128,30 @@ class _ProfilePageState extends State<ProfilePage> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  profiles[_currentPage].name,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
+                                            AnimatedOpacity(
+                                              opacity: _isAnimatingText ? 0.0 : 1.0,
+                                              duration: const Duration(milliseconds: 200),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    profiles[_currentPage].name,
+                                                    style: const TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 18,
+                                                    ),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  profiles[_currentPage].location,
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.grey[600],
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    profiles[_currentPage].location,
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.grey[600],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                             AnimatedFollowButton(
                                               following: profiles[_currentPage].isFollowing,

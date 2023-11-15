@@ -1,3 +1,3 @@
 # kinder
 
-https://github.com/mbaimuratov/kinder/assets/65300426/423543b3-a752-44d2-9a81-9332afa8a4a5
+https://github.com/mbaimuratov/kinder/assets/65300426/6419fd95-a72d-4f68-b9a7-a7f914023b4b
